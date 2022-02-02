@@ -59,6 +59,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    
+    CommandScheduler.getInstance().schedule(new DriveXMeters(1.0, 0.2, 0.1));
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
@@ -81,12 +83,12 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    CommandScheduler.getInstance().schedule(new DriveXMeters(1.0, 0.2, 0.1));
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
