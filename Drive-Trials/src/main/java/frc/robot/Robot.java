@@ -83,6 +83,9 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    CommandScheduler.getInstance().schedule(new DriveXMeters(1.0, 0.2, 0.1));
+    m_autoSelected = m_chooser.getSelected();
+    CommandScheduler.getInstance().run();
   }
 
   /** This function is called periodically during operator control. */
