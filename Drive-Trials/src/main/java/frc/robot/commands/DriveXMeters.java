@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants;
 import frc.robot.RobotContainer;
 import frc.robot.Constants.DrivetrainConstants;
+import edu.wpi.first.wpilibj.Timer;
 import frc.robot.subsystems.Drivetrain;
 
 public class DriveXMeters implements Command {
@@ -14,6 +15,7 @@ public class DriveXMeters implements Command {
     private TrapezoidProfile.State goal;
     private TrapezoidProfile profile;
     private TrapezoidProfile.Constraints constraints;
+    private double startTime;
     
 
     /*
@@ -25,7 +27,7 @@ public class DriveXMeters implements Command {
         constraints = new TrapezoidProfile.Constraints(maxSpeedMPS, maxAccelMPSS);
         goal = new TrapezoidProfile.State(distance, 0);
         profile = new TrapezoidProfile(constraints, goal);
-
+        startTime = Timer.getFPGATimestamp();
     }
 
 
@@ -36,7 +38,8 @@ public class DriveXMeters implements Command {
 
     @Override
     public void execute() {
-        TrapezoidProfile.State profileCalc = profile.calculate(Constants.dt);
+        //TrapezoidProfile.State profileCalc = profile.calculate(Constants.dt);
+        TrapezoidProfile.State profileCalc = profile.calculate(Timer.getFPGATimestamp() - startTime);
         double left, right;
         left = Drivetrain.FEEDFORWARD.calculate(profileCalc.velocity);
         right = Drivetrain.FEEDFORWARD.calculate(profileCalc.velocity);
@@ -45,7 +48,7 @@ public class DriveXMeters implements Command {
         left /= Constants.kMaxVoltage;
         right /= Constants.kMaxVoltage;
         drivetrain.setOpenLoop(left, right);
-        profile = new TrapezoidProfile(constraints, goal, profileCalc);
+        //profile = new TrapezoidProfile(constraints, goal, profileCalc);
     }
 
     public Set<Subsystem> getRequirements() {
