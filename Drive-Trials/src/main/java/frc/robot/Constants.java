@@ -37,7 +37,7 @@ public class Constants {
         public static final double kA = 0.0824; // voltage over acceleration (V(meters/second/second))
 
         /* PID constants */
-        public static final double kP = 0; //formerly 2.99
+        public static final double kP = 0.1; //formerly 2.9
         public static final double kI = 0;
         public static final double kD = 0;
 

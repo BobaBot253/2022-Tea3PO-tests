@@ -51,6 +51,11 @@ public class DriveXMeters implements Command {
         //profile = new TrapezoidProfile(constraints, goal, profileCalc);
     }
 
+    @Override 
+    public boolean isFinished() {
+        return profile.isFinished(Timer.getFPGATimestamp() - startTime);
+    }
+
     public Set<Subsystem> getRequirements() {
         return Set.of(requirements);
     }
