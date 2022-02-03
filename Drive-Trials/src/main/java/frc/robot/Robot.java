@@ -64,7 +64,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     
-    CommandScheduler.getInstance().schedule(auto = (new DriveXMeters(-2, 0.2, 0.1)));
+    CommandScheduler.getInstance().schedule(auto = (new DriveXMeters(1, 0.2, 0.1)));
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
