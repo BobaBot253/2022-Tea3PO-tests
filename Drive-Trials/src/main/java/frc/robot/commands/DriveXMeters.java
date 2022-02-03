@@ -55,8 +55,8 @@ public class DriveXMeters implements Command {
         double left, right;
         left = Drivetrain.FEEDFORWARD.calculate(profileCalc.velocity);
         right = Drivetrain.FEEDFORWARD.calculate(profileCalc.velocity);
-        left += Drivetrain.LEFT_PID_CONTROLLER.calculate(DrivetrainUnits.TicksToMeters(Drivetrain.getLeftEnc()) , profileCalc.position);
-        right += Drivetrain.RIGHT_PID_CONTROLLER.calculate(DrivetrainUnits.TicksToMeters(Drivetrain.getRightEnc()), profileCalc.position);
+        left += Drivetrain.LEFT_PID_CONTROLLER.calculate(DrivetrainUnits.TicksToMeters(Drivetrain.getLeftEnc()) , (gear == gear.reverse) ? -profileCalc.position : profileCalc.position);
+        right += Drivetrain.RIGHT_PID_CONTROLLER.calculate(DrivetrainUnits.TicksToMeters(Drivetrain.getRightEnc()), (gear == gear.reverse) ? -profileCalc.position : profileCalc.position);
         left /= Constants.kMaxVoltage;
         right /= Constants.kMaxVoltage;
         if(gear == Gear.reverse) {
