@@ -16,9 +16,9 @@ public class Constants {
         /* Common drive mode settings */
         public static final double kJoystickDeadband = 0.07; // How much of joystick is "dead" zone [0,1]
         public static final double kDriveSens = 0.1; // Overall speed setting (turn down for demos) [0,1]
-        public static final double kTurnInPlaceSens = 0.5; // Maximum turn-in-place rate (in percent of max) to allow
+        public static final double kTurnInPlaceSens = 0.1; // Maximum turn-in-place rate (in percent of max) to allow
                                                             // robot to turn to [0,1]
-        public static final double kTurnSens = 1; // Maximum normal turning rate (in percent of max) to allow robot to
+        public static final double kTurnSens = 0.5; // Maximum normal turning rate (in percent of max) to allow robot to
                                                   // turn to [0,1]
 
     }
@@ -37,9 +37,11 @@ public class Constants {
         public static final double kA = 0.0824; // voltage over acceleration (V(meters/second/second)) 0.0824
 
         /* PID constants */
-        public static final double kP = 2.9; //formerly 2.9
+        public static final double kP = 2.9; //formerly 2.9; 1.37
         public static final double kI = 0;
         public static final double kD = 0;
+
+        public static final double buffer = 0.2;
 
         /* Wheels Constants */
         public static final double kTicksPerRotation = 2048 * 10.42; // Falcon 500 integrated encoder (2048 CPR)

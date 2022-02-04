@@ -1,6 +1,9 @@
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -20,6 +23,7 @@ public class RobotContainer {
     public static Shooter shooter;
     public static Climber climber;
     public static Arm arm;
+    public static AHRS navX;
     public boolean goShooter = false;
     private static final XboxController driver = new XboxController(Constants.InputPorts.driver_Controller);
 
@@ -43,7 +47,9 @@ public class RobotContainer {
     private static final POVButton operator_DPAD_UP = new POVButton(operator, 0),
             operator_DPAD_RIGHT = new POVButton(driver, 90), operator_DPAD_DOWN = new POVButton(operator, 180),
             operator_DPAD_LEFT = new POVButton(driver, 270);
+    
     private RobotContainer() {
+        navX = new AHRS(Port.kMXP);
         drivetrain = Drivetrain.getInstance();
         drivetrain.setDefaultCommand(new Drive(Drive.State.CheesyDriveOpenLoop));
         intake = Intake.getInstance();

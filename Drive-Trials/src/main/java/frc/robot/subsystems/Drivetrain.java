@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.List;
 
+import frc.robot.RobotContainer;
 import frc.robot.Units;
 import frc.robot.Util;
 
@@ -10,7 +11,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.Constants.DrivetrainConstants;
@@ -29,6 +32,7 @@ public class Drivetrain implements Subsystem {
     public static final SimpleMotorFeedforward FEEDFORWARD = new SimpleMotorFeedforward(DrivetrainConstants.kS, DrivetrainConstants.kV, DrivetrainConstants.kA);
     public static final PIDController LEFT_PID_CONTROLLER = new PIDController(DrivetrainConstants.kP, DrivetrainConstants.kI, DrivetrainConstants.kD);
     public static final PIDController RIGHT_PID_CONTROLLER = new PIDController(DrivetrainConstants.kP, DrivetrainConstants.kI, DrivetrainConstants.kD);
+    public static DifferentialDriveOdometry ODOMETRY = new DifferentialDriveOdometry(Rotation2d.fromDegrees(RobotContainer.navX.getAngle()));
     private static Drivetrain instance;
     private Drivetrain() {
         leftSlave.follow(leftMaster);
@@ -43,6 +47,14 @@ public class Drivetrain implements Subsystem {
     public static Drivetrain getInstance() {
         if(instance == null) instance = new Drivetrain();
         return instance;
+    }
+
+    @Override
+    public void periodic() {
+        ODOMETRY.update(Rotation2d.fromDegrees(RobotContainer.navX.getAngle()),
+                        getLeftEncMeters(),
+                        getRightEncMeters());
+        
     }
     /**
      * Sets drivetrain speeds in open loop (% of max voltage)
