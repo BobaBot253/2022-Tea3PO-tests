@@ -9,8 +9,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveXMeters;
 import frc.robot.commands.TurnXDegrees;
+import frc.robot.commands.TurnXDegreesAlt;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -69,12 +71,15 @@ public class Robot extends TimedRobot {
   
   @Override
   public void autonomousInit() {
-    
-    CommandScheduler.getInstance().schedule(auto = (new TurnXDegrees(10))); 
+    // CommandScheduler.getInstance().schedule(auto = (new DriveXMeters(1, 0.3, 0.3)));
+    CommandScheduler.getInstance().schedule(auto = new SequentialCommandGroup(
+      new TurnXDegreesAlt(180, 100 , 70)
+    ));
+    // CommandScheduler.getInstance().schedule(auto = (new TurnXDegrees(10))); 
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-    //robot.navX.reset();
+    robot.navX.reset();
   }
 
   /** This function is called periodically during autonomous. */

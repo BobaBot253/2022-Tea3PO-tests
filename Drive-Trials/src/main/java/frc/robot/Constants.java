@@ -41,6 +41,10 @@ public class Constants {
         public static final double kI = 0;
         public static final double kD = 0;
 
+        public static final double tkP = 1.3;
+        public static final double tkI = 0;
+        public static final double tkD = 0;
+
         public static final double buffer = 0.2;
 
         /* Wheels Constants */
