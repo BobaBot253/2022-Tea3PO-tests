@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveXMeters;
 import frc.robot.commands.TurnXDegrees;
-import frc.robot.commands.TurnXDegreesAlt;
+import frc.robot.commands.TurnXDegrees;
+import frc.robot.commands.DriveXMeters.Gear;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -72,9 +73,12 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     // CommandScheduler.getInstance().schedule(auto = (new DriveXMeters(1, 0.3, 0.3)));
-    CommandScheduler.getInstance().schedule(auto = new SequentialCommandGroup(
-      new TurnXDegreesAlt(180, 100 , 70)
-    ));
+    CommandScheduler.getInstance().schedule(auto = (new SequentialCommandGroup(
+      new TurnXDegrees(359, 480, 359), 
+      // new TurnXDegrees(90, 240, 180),
+      new DriveXMeters(0.2, 0.1, 0.1),
+      new DriveXMeters(-0.2, 0.1, 0.1) //gear.reverse does not work, use negative distance instead
+    )));
     // CommandScheduler.getInstance().schedule(auto = (new TurnXDegrees(10))); 
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
