@@ -58,7 +58,8 @@ public class VisionTrack implements Command {
 
         if (turnError < VisionConstants.kTurnTolerance) turnError = 0;
         if (distError < VisionConstants.kDistTolerance) distError = 0;
-
+        //Current blue pipeline has roughly 4ft range
+        //Current red pipeline has roughly 4ft range
         double throttle = DIST_PID_CONTROLLER.calculate(distError, 0);
         double turn = TURN_PID_CONTROLLER.calculate(turnError, 0);
         double thor = RobotContainer.limelight.getEntry("thor").getDouble(0);
