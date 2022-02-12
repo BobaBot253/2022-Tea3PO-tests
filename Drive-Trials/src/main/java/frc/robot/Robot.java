@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveXMeters;
 import frc.robot.commands.TurnXDegrees;
+import frc.robot.commands.VisionTrack;
 import frc.robot.commands.TurnXDegrees;
 import frc.robot.commands.DriveXMeters.Gear;
 
@@ -72,7 +73,8 @@ public class Robot extends TimedRobot {
   
   @Override
   public void autonomousInit() {
-    // CommandScheduler.getInstance().schedule(auto = (new DriveXMeters(1, 0.3, 0.3)));
+    CommandScheduler.getInstance().schedule(auto = (new VisionTrack(RobotContainer.getAlliancePipeline())));
+    /*// CommandScheduler.getInstance().schedule(auto = (new DriveXMeters(1, 0.3, 0.3)));
     CommandScheduler.getInstance().schedule(auto = (new SequentialCommandGroup(
       new TurnXDegrees(359, 480, 359), 
       // new TurnXDegrees(90, 240, 180),
@@ -83,21 +85,13 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-    robot.navX.reset();
+    robot.navX.reset();*/
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    
   }
 
   /** This function is called once when teleop is enabled. */
@@ -108,7 +102,8 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override

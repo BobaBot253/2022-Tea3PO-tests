@@ -2,10 +2,15 @@ package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.DriverConstants;
@@ -13,6 +18,7 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.ConveyorQueue;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
+import frc.robot.commands.VisionTrack;
 import frc.robot.subsystems.*;
 
 public class RobotContainer {
@@ -25,6 +31,8 @@ public class RobotContainer {
     public static Arm arm;
     public static AHRS navX;
     public boolean goShooter = false;
+    public static NetworkTable limelight;
+    public static NetworkTable limelightS;
     private static final XboxController driver = new XboxController(Constants.InputPorts.driver_Controller);
 
     private static final XboxController operator = new XboxController(Constants.InputPorts.operator_Controller);
@@ -47,13 +55,16 @@ public class RobotContainer {
     private static final POVButton operator_DPAD_UP = new POVButton(operator, 0),
             operator_DPAD_RIGHT = new POVButton(driver, 90), operator_DPAD_DOWN = new POVButton(operator, 180),
             operator_DPAD_LEFT = new POVButton(driver, 270);
-    
+    public static VisionTrack teleopCommand;
+    //private boolean isRedAlliance = true;
     private RobotContainer() {
         navX = new AHRS(Port.kMXP);
         drivetrain = Drivetrain.getInstance();
         drivetrain.setDefaultCommand(new Drive(Drive.State.CheesyDriveOpenLoop));
         intake = Intake.getInstance();
-
+        limelight = NetworkTableInstance.getDefault().getTable("limelight-intake");
+        //teleopCommand = new VisionTrack((isRedAlliance) ? CargoPipeline.RED : CargoPipeline.BLUE);
+        //limelightS = NetworkTableInstance.getDefault().getTable("limelight-shooter");
         conveyor = Conveyor.getInstance();
         conveyor.setDefaultCommand(new ConveyorQueue(ConveyorQueue.State.None));
 
@@ -62,7 +73,7 @@ public class RobotContainer {
         arm = Arm.getInstance();
 
         shooter = Shooter.getInstance();
-
+        //drivetrain.setDefaultCommand(teleopCommand);
         bindOI();
     }
 
@@ -70,7 +81,11 @@ public class RobotContainer {
      * Binds operator input to Commands 
      */
     private void bindOI() {
-        
+        /*Runnable swapTeams = ()->{isRedAlliance = !isRedAlliance;
+            teleopCommand.changePipeline((isRedAlliance) ? CargoPipeline.RED : CargoPipeline.BLUE);
+        }; Demonstration code only, not to be used in comp*/
+        //driver_X.whenPressed(()-> {}, drivetrain).whenReleased(new InstantCommand(swapTeams, drivetrain));  
+              
         // Flip down intake arm and spin when RB is held, flip back up and stop spinning when released
          driver_RB.whileHeld(new RunCommand(()->arm.rotate(-0.4), arm)
                      .alongWith(new RunCommand( ()->intake.intake(0.5)))
@@ -152,5 +167,24 @@ public class RobotContainer {
             return (1 / (1 - deadband) * (input + Math.signum(-input) * deadband));
         }
     }
+    public enum CargoPipeline {
+        RED(0), BLUE(1), INVALID(2);
 
+        public int val;
+        CargoPipeline(int val) {
+            this.val= val;
+        }
+    }
+
+    public static CargoPipeline getAlliancePipeline() {
+        DriverStation.Alliance alliance = DriverStation.getAlliance();
+        switch(alliance) {
+            case Blue:
+                return CargoPipeline.BLUE;
+            case Red:
+                return CargoPipeline.RED;
+            default:
+                return CargoPipeline.INVALID;
+        }
+    }
 }
