@@ -17,7 +17,7 @@ import frc.robot.subsystems.Drivetrain;
 
 import java.util.Set;
 
-public class VisionTrack implements Command {
+public class CargoTrack implements Command {
 
     private static final PIDController TURN_PID_CONTROLLER = new PIDController(VisionConstants.kPTurn,
             VisionConstants.kITurn, VisionConstants.kDTurn);
@@ -26,7 +26,7 @@ public class VisionTrack implements Command {
 
     private Subsystem[] requirements = { RobotContainer.drivetrain };
     
-    public VisionTrack(CargoPipeline color) {
+    public CargoTrack(CargoPipeline color) {
         RobotContainer.limelight.getEntry("pipeline").setNumber(color.val);
     }
 /* For on-the-go changing of cargo targets: not to be used in competition
@@ -59,7 +59,7 @@ public class VisionTrack implements Command {
         if (turnError < VisionConstants.kTurnTolerance) turnError = 0;
         if (distError < VisionConstants.kDistTolerance) distError = 0;
         //Current blue pipeline has roughly 4ft range
-        //Current red pipeline has roughly 4ft range
+        //Current red pipeline has roughly 8ft range
         double throttle = DIST_PID_CONTROLLER.calculate(distError, 0);
         double turn = TURN_PID_CONTROLLER.calculate(turnError, 0);
         double thor = RobotContainer.limelight.getEntry("thor").getDouble(0);

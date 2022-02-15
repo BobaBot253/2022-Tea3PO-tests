@@ -18,7 +18,6 @@ import frc.robot.commands.Climb;
 import frc.robot.commands.ConveyorQueue;
 import frc.robot.commands.Drive;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.VisionTrack;
 import frc.robot.subsystems.*;
 
 public class RobotContainer {
@@ -55,7 +54,6 @@ public class RobotContainer {
     private static final POVButton operator_DPAD_UP = new POVButton(operator, 0),
             operator_DPAD_RIGHT = new POVButton(driver, 90), operator_DPAD_DOWN = new POVButton(operator, 180),
             operator_DPAD_LEFT = new POVButton(driver, 270);
-    public static VisionTrack teleopCommand;
     //private boolean isRedAlliance = true;
     private RobotContainer() {
         navX = new AHRS(Port.kMXP);

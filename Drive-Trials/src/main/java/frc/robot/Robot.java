@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveXMeters;
 import frc.robot.commands.TurnXDegrees;
-import frc.robot.commands.VisionTrack;
+import frc.robot.commands.CargoTrack;
 import frc.robot.commands.TurnXDegrees;
 import frc.robot.commands.DriveXMeters.Gear;
 
@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
   
   @Override
   public void autonomousInit() {
-    CommandScheduler.getInstance().schedule(auto = (new VisionTrack(RobotContainer.getAlliancePipeline())));
+    CommandScheduler.getInstance().schedule(auto = (new CargoTrack(RobotContainer.getAlliancePipeline())));
     /*// CommandScheduler.getInstance().schedule(auto = (new DriveXMeters(1, 0.3, 0.3)));
     CommandScheduler.getInstance().schedule(auto = (new SequentialCommandGroup(
       new TurnXDegrees(359, 480, 359), 
