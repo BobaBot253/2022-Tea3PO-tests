@@ -73,7 +73,7 @@ public class Robot extends TimedRobot {
   
   @Override
   public void autonomousInit() {
-    CommandScheduler.getInstance().schedule(auto = (new CargoTrack(RobotContainer.getAlliancePipeline())));
+    CommandScheduler.getInstance().schedule(auto = RobotContainer.getAutonomousCommand());
     /*// CommandScheduler.getInstance().schedule(auto = (new DriveXMeters(1, 0.3, 0.3)));
     CommandScheduler.getInstance().schedule(auto = (new SequentialCommandGroup(
       new TurnXDegrees(359, 480, 359), 
