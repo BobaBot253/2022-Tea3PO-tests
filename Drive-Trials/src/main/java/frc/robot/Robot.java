@@ -7,8 +7,14 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveXMeters;
+import frc.robot.commands.TurnXDegrees;
+import frc.robot.commands.CargoTrack;
+import frc.robot.commands.TurnXDegrees;
+import frc.robot.commands.DriveXMeters.Gear;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -32,6 +38,8 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     robot = RobotContainer.getInstance();
+    robot.drivetrain.resetEncoders();
+    robot.navX.reset();
   }
 
   /**
@@ -43,8 +51,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-
+    
     CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber("left enc", robot.drivetrain.getLeftEncMeters());
+    SmartDashboard.putNumber("right enc", robot.drivetrain.getRightEncMeters());
+
+    SmartDashboard.putNumber("navx angle", robot.navX.getAngle());
   }
 
   /**
@@ -57,36 +69,41 @@ public class Robot extends TimedRobot {
    * below with additional strings. If using the SendableChooser make sure to add them to the
    * chooser code above as well.
    */
+  private Command auto;
+  
   @Override
   public void autonomousInit() {
+    CommandScheduler.getInstance().schedule(auto = (new CargoTrack(RobotContainer.getAlliancePipeline())));
+    /*// CommandScheduler.getInstance().schedule(auto = (new DriveXMeters(1, 0.3, 0.3)));
+    CommandScheduler.getInstance().schedule(auto = (new SequentialCommandGroup(
+      new TurnXDegrees(359, 480, 359), 
+      // new TurnXDegrees(90, 240, 180),
+      new DriveXMeters(0.2, 0.1, 0.1),
+      new DriveXMeters(-0.2, 0.1, 0.1) //gear.reverse does not work, use negative distance instead
+    )));
+    // CommandScheduler.getInstance().schedule(auto = (new TurnXDegrees(10))); 
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+    robot.navX.reset();*/
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
+    
   }
 
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    CommandScheduler.getInstance().schedule(new DriveXMeters(1.0, 0.2, 0.1));
+    if(auto != null) auto.cancel();
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override
