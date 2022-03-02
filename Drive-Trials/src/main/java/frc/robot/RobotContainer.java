@@ -7,7 +7,9 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.robot.Constants.DriverConstants;
+import frc.robot.Constants.VisionConstants;
 import frc.robot.commands.Climb;
 import frc.robot.commands.ConveyorQueue;
 import frc.robot.commands.Drive;
@@ -57,22 +60,22 @@ public class RobotContainer {
             operator_DPAD_LEFT = new POVButton(driver, 270);
     //private boolean isRedAlliance = true;
     private RobotContainer() {
-        navX = new AHRS(Port.kMXP);
-        drivetrain = Drivetrain.getInstance();
-        drivetrain.setDefaultCommand(new Drive(Drive.State.CheesyDriveOpenLoop));
-        intake = Intake.getInstance();
-        limelight = NetworkTableInstance.getDefault().getTable("limelight-intake");
+        //navX = new AHRS(Port.kMXP);
+        //drivetrain = Drivetrain.getInstance();
+        //drivetrain.setDefaultCommand(new Drive(Drive.State.CheesyDriveOpenLoop));
+        //intake = Intake.getInstance();
+        limelight = NetworkTableInstance.getDefault().getTable("limelight-shooter");
         //teleopCommand = new VisionTrack((isRedAlliance) ? CargoPipeline.RED : CargoPipeline.BLUE);
         //limelightS = NetworkTableInstance.getDefault().getTable("limelight-shooter");
-        conveyor = Conveyor.getInstance();
-        conveyor.setDefaultCommand(new ConveyorQueue(ConveyorQueue.State.None));
+        // conveyor = Conveyor.getInstance();
+        // conveyor.setDefaultCommand(new ConveyorQueue(ConveyorQueue.State.None));
 
-        climber = Climber.getInstance();
+        // climber = Climber.getInstance();
 
-        arm = Arm.getInstance();
+        // arm = Arm.getInstance();
 
-        shooter = Shooter.getInstance();
-        //drivetrain.setDefaultCommand(teleopCommand);
+        // shooter = Shooter.getInstance();
+        // //drivetrain.setDefaultCommand(teleopCommand);
         bindOI();
     }
 
@@ -90,40 +93,40 @@ public class RobotContainer {
         //driver_X.whenPressed(()-> {}, drivetrain).whenReleased(new InstantCommand(swapTeams, drivetrain));  
               
         // Flip down intake arm and spin when RB is held, flip back up and stop spinning when released
-         driver_RB.whileHeld(new RunCommand(()->arm.rotate(-0.4), arm)
-                     .alongWith(new RunCommand( ()->intake.intake(0.5)))
-                     .alongWith(new RunCommand( ()->intake.setConveyor(0.5))))
-                 .whenReleased(new RunCommand( ()->arm.rotate(0.35), arm)
-                     .alongWith(new InstantCommand(intake::stopIntake)));
+        //  driver_RB.whileHeld(new RunCommand(()->arm.rotate(-0.4), arm)
+        //              .alongWith(new RunCommand( ()->intake.intake(0.5)))
+        //              .alongWith(new RunCommand( ()->intake.setConveyor(0.5))))
+        //          .whenReleased(new RunCommand( ()->arm.rotate(0.35), arm)
+        //              .alongWith(new InstantCommand(intake::stopIntake)));
      
-         // Spin up shooter when LB is held, stop when released
-         driver_LB.whileHeld(new Shoot());
+        //  // Spin up shooter when LB is held, stop when released
+        //  driver_LB.whileHeld(new Shoot());
  
-         // Flip intake down and spin outwards to sweep balls out of the way when A is held, flip up and stop when released
-         driver_A.whileHeld(new RunCommand(()->arm.rotate(-0.4), arm)
-                     .alongWith(new RunCommand( ()->intake.intake(-0.5))))
-                 .whenReleased(new RunCommand( ()->arm.rotate(0.35), arm)
-                     .alongWith(new InstantCommand(intake::stopIntake)));   
+        //  // Flip intake down and spin outwards to sweep balls out of the way when A is held, flip up and stop when released
+        //  driver_A.whileHeld(new RunCommand(()->arm.rotate(-0.4), arm)
+        //              .alongWith(new RunCommand( ()->intake.intake(-0.5))))
+        //          .whenReleased(new RunCommand( ()->arm.rotate(0.35), arm)
+        //              .alongWith(new InstantCommand(intake::stopIntake)));   
  
-         // Run both climbers when DPAD up is held
-         operator_DPAD_UP.whileHeld(new Climb(Climb.Side.BOTH, 0.5));
-         operator_DPAD_DOWN.whileHeld(new Climb(Climb.Side.BOTH, -0.5));
+        //  // Run both climbers when DPAD up is held
+        //  operator_DPAD_UP.whileHeld(new Climb(Climb.Side.BOTH, 0.5));
+        //  operator_DPAD_DOWN.whileHeld(new Climb(Climb.Side.BOTH, -0.5));
  
-         // Run the right and left climbers when view and menu are held, respectively
-         operator_VIEW.whileHeld(new Climb(Climb.Side.LEFT, 0.5));
-         operator_MENU.whileHeld(new Climb(Climb.Side.RIGHT, 0.5));
+        //  // Run the right and left climbers when view and menu are held, respectively
+        //  operator_VIEW.whileHeld(new Climb(Climb.Side.LEFT, 0.5));
+        //  operator_MENU.whileHeld(new Climb(Climb.Side.RIGHT, 0.5));
  
-         // 2nd Controller vertical conveyor up and down respectively
-         operator_Y.whileHeld(new RunCommand(()-> conveyor.setOpenLoop(0.55), conveyor))
-                    .whenReleased(new InstantCommand(conveyor::stop, conveyor));
-         operator_A.whileHeld(new RunCommand(()-> conveyor.setOpenLoop(-0.55), conveyor)) 
-                    .whenReleased(new InstantCommand(conveyor::stop, conveyor));
+        //  // 2nd Controller vertical conveyor up and down respectively
+        //  operator_Y.whileHeld(new RunCommand(()-> conveyor.setOpenLoop(0.55), conveyor))
+        //             .whenReleased(new InstantCommand(conveyor::stop, conveyor));
+        //  operator_A.whileHeld(new RunCommand(()-> conveyor.setOpenLoop(-0.55), conveyor)) 
+        //             .whenReleased(new InstantCommand(conveyor::stop, conveyor));
  
-         // 2nd controller horizontal conveyor in and out respectively
-         operator_X.whileHeld(new RunCommand(()-> intake.setConveyor(0.5), intake))
-                      .whenReleased(new InstantCommand(intake::stopIntake, intake));
-         operator_B.whileHeld(new RunCommand(()-> intake.setConveyor(-0.5), intake))
-         .whenReleased(new InstantCommand(intake::stopIntake, intake));
+        //  // 2nd controller horizontal conveyor in and out respectively
+        //  operator_X.whileHeld(new RunCommand(()-> intake.setConveyor(0.5), intake))
+        //               .whenReleased(new InstantCommand(intake::stopIntake, intake));
+        //  operator_B.whileHeld(new RunCommand(()-> intake.setConveyor(-0.5), intake))
+        //  .whenReleased(new InstantCommand(intake::stopIntake, intake));
          
      }
  
@@ -131,6 +134,15 @@ public class RobotContainer {
     public static RobotContainer getInstance() {
         if(instance == null) instance = new RobotContainer();
         return instance;
+    }
+
+    public static double getDistance() {
+        double offsetAngle = limelight.getEntry("ty").getDouble(0.0);
+        double angleGoalRads = (VisionConstants.mountAngle + offsetAngle) * (Math.PI/180);
+        SmartDashboard.putNumber("offset angle", offsetAngle);
+        SmartDashboard.putNumber("true angle", angleGoalRads * 180 / Math.PI);
+
+        return (VisionConstants.goalHeightInches - VisionConstants.limelightHeightInches)/(Math.tan(angleGoalRads));
     }
 
     /**

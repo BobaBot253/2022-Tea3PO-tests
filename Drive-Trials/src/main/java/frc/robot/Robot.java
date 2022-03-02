@@ -38,8 +38,8 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
     robot = RobotContainer.getInstance();
-    robot.drivetrain.resetEncoders();
-    robot.navX.reset();
+    //robot.drivetrain.resetEncoders();
+    //robot.navX.reset();
   }
 
   /**
@@ -53,10 +53,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     
     CommandScheduler.getInstance().run();
-    SmartDashboard.putNumber("left enc", robot.drivetrain.getLeftEncMeters());
-    SmartDashboard.putNumber("right enc", robot.drivetrain.getRightEncMeters());
+    //SmartDashboard.putNumber("left enc", robot.drivetrain.getLeftEncMeters());
+    //SmartDashboard.putNumber("right enc", robot.drivetrain.getRightEncMeters());
 
-    SmartDashboard.putNumber("navx angle", robot.navX.getAngle());
+    SmartDashboard.putNumber("limelight distance", RobotContainer.getDistance());
   }
 
   /**

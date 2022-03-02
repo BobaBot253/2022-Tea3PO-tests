@@ -138,7 +138,10 @@ public class Constants {
         public static double kIDist = 0;
         public static double kDDist = 0;
         public static double kDistTolerance = 0;
-    }
+
+        public static double mountAngle = 0;
+        public static double goalHeightInches = 50;
+        public static double limelightHeightInches = 35.6+1;    }
 
     public static class ClimberConstants{
         public static final int leftMotorID = 4;
